@@ -9,18 +9,20 @@ public class Login {
                 Login.setLocationRelativeTo(null);
                 Login.setLayout(null);
 
+                ImageIcon originalIcon = new ImageIcon("src/nexuslogo.png");
+            
+                Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+                ImageIcon iconReduzido = new ImageIcon(imagemRedimensionada);
+                JLabel label = new JLabel(iconReduzido);
+                label.setBounds(360, 30, 200, 100);
+
                 
                 JPanel panel = new JPanel();
                 panel.setBackground(new Color(2, 13, 50));
                 panel.setLayout(null);
                 Login.setContentPane(panel);
-                
-
-                JLabel nexus = new JLabel("NEXUS");
-                nexus.setFont(new Font("Arial", Font.BOLD, 30));
-                nexus.setForeground(Color.WHITE);
-                nexus.setBounds(400, 30, 200, 50);
-
+                        
+                panel.add(label);
 
                 JLabel login = new JLabel("Login:");
                 login.setFont(new Font("Arial", Font.BOLD, 20));
@@ -58,7 +60,6 @@ public class Login {
                 Login.add(senha);
                 Login.add(loginText);
                 Login.add(login);
-                Login.add(nexus);
                 Login.setVisible(true);
 
                 logar.addActionListener(e -> {
