@@ -2,131 +2,143 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Login {
-    public static void main(String[] args) {
-        JFrame Login = new JFrame("Tela Usuário");
-        Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Login.setSize(850, 500);
-        Login.setLocationRelativeTo(null);
-        Login.setLayout(null);
+            public static void main(String[] args) {
+                JFrame Login = new JFrame("Tela Usuário");
+                Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                Login.setSize(850, 500);
+                Login.setLocationRelativeTo(null);
+                Login.setLayout(null);
 
-        JLabel nexus = new JLabel("NEXUS");
-        nexus.setFont(new Font("Arial", Font.BOLD, 30));
-        nexus.setBounds(400, 30, 200, 50);
+                
+                JPanel panel = new JPanel();
+                panel.setBackground(new Color(2, 13, 50));
+                panel.setLayout(null);
+                Login.setContentPane(panel);
+                
 
-        JLabel login = new JLabel("Login:");
-        login.setFont(new Font("Arial", Font.BOLD, 20));
-        login.setBounds(300, 120, 200, 50);
+                JLabel nexus = new JLabel("NEXUS");
+                nexus.setFont(new Font("Arial", Font.BOLD, 30));
+                nexus.setForeground(Color.WHITE);
+                nexus.setBounds(400, 30, 200, 50);
 
-        JTextField loginText = new JTextField();
-        loginText.setBounds(360, 120, 200, 40);
 
-        JLabel senha = new JLabel("Senha:");
-        senha.setFont(new Font("Arial", Font.BOLD, 20));
-        senha.setBounds(295, 180, 200, 40);
+                JLabel login = new JLabel("Login:");
+                login.setFont(new Font("Arial", Font.BOLD, 20));
+                login.setForeground(Color.WHITE);
+                login.setBounds(300, 120, 200, 50);
 
-        JTextField senhaText = new JTextField();
-        senhaText.setBounds(360, 180, 200, 40);
+                JTextField loginText = new JTextField();
+                loginText.setBounds(360, 120, 200, 40);
 
-        JButton logar = new JButton("Logar");
-        logar.setFont(new Font("Arial", Font.BOLD, 15));
-        logar.setBounds(400, 240, 90, 30);
+                JLabel senha = new JLabel("Senha:");
+                senha.setFont(new Font("Arial", Font.BOLD, 20));
+                senha.setForeground(Color.WHITE);
+                senha.setBounds(295, 180, 200, 40);
 
-        JLabel cadastre = new JLabel("Já tem login ? Se não cadastre-se abaixo");
-        cadastre.setFont(new Font("Arial", Font.BOLD, 15));
-        cadastre.setBounds(315, 272, 300, 40);
+                JPasswordField senhaText = new JPasswordField();
+                senhaText.setBounds(360, 180, 200, 40);
 
-        JButton cadastrar = new JButton("Cadastrar");
-        cadastrar.setFont(new Font("Arial", Font.BOLD, 15));
-        cadastrar.setBounds(385, 310, 120, 30);
+                JButton logar = new JButton("Logar");
+                logar.setFont(new Font("Arial", Font.BOLD, 15));
+                logar.setBounds(400, 240, 90, 30);
 
-        Login.add(cadastre);
-        Login.add(cadastrar);
-        Login.add(logar);
-        Login.add(senhaText);
-        Login.add(senha);
-        Login.add(loginText);
-        Login.add(login);
-        Login.add(nexus);
-        Login.setVisible(true);
+                JLabel cadastre = new JLabel("Já tem login ? Se não cadastre-se abaixo");
+                cadastre.setFont(new Font("Arial", Font.BOLD, 15));
+                cadastre.setForeground(Color.WHITE);
+                cadastre.setBounds(315, 272, 300, 40);
 
-        logar.addActionListener(e -> {
-            if(loginText.getText().equals("admin") && senhaText.getText().equals("12345")) {
-                JOptionPane.showMessageDialog(Login, "Logado com sucesso!");
-                    JFrame menu = new JFrame("Menu");
-                    menu.setSize(850, 500);
-                    menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    menu.setLayout(null);
-                    menu.setLocationRelativeTo(null);
-                JLabel Nexus = new JLabel("Bem vindo ao Nexus");
-                Nexus.setFont(new Font("Arial", Font.BOLD, 30));
-                Nexus.setBounds(400, 30, 200, 50);
+                JButton cadastrar = new JButton("Cadastrar");
+                cadastrar.setFont(new Font("Arial", Font.BOLD, 15));
+                cadastrar.setBounds(385, 310, 120, 30);
 
-                menu.add(Nexus);
-                menu.setVisible(true);
-            }   else if (loginText.getText().equals("admin") != senhaText.getText().equals("12345")) {
-                JOptionPane.showMessageDialog(Login, "Erro ao logar!");
-            }
-        });
+                Login.add(cadastre);
+                Login.add(cadastrar);
+                Login.add(logar);
+                Login.add(senhaText);
+                Login.add(senha);
+                Login.add(loginText);
+                Login.add(login);
+                Login.add(nexus);
+                Login.setVisible(true);
 
-        cadastrar.addActionListener(e ->  {
-            JFrame cadastro = new JFrame("Cadastro de Usuário");
-            cadastro.setSize(850, 500);
-            cadastro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            cadastro.setLocationRelativeTo(null);
-            cadastro.setLayout(null);
+                logar.addActionListener(e -> {
+                    if(loginText.getText().equals("admin") && senhaText.getText().equals("12345")) {
+                        JOptionPane.showMessageDialog(Login, "Logado com sucesso!");
+                        JFrame menu = new JFrame("Menu");
+                        menu.setSize(850, 500);
+                        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        menu.setLayout(null);
+                        menu.setLocationRelativeTo(null);
+                        JLabel Nexus = new JLabel("Bem vindo ao Nexus");
+                        Nexus.setFont(new Font("Arial", Font.BOLD, 30));
+                        Nexus.setBounds(400, 30, 200, 50);
 
-            JLabel nexusCadastro = new JLabel("NEXUS");
-            nexusCadastro.setFont(new Font("Arial", Font.BOLD, 30));
-            nexusCadastro.setBounds(400, 30, 200, 50);
+                        menu.add(Nexus);
+                        menu.setVisible(true);
+                    }   else if (loginText.getText().equals("admin") != senhaText.getText().equals("12345")) {
+                        JOptionPane.showMessageDialog(Login, "Erro ao logar!");
+                    }
+                });
 
-            JLabel usuarioCadastro = new JLabel("Nome Usuario:");
-            usuarioCadastro.setFont(new Font("Arial", Font.BOLD, 15));
-            usuarioCadastro.setBounds(250, 120, 200, 40);
+                cadastrar.addActionListener(e ->  {
+                    JFrame cadastro = new JFrame("Cadastro de Usuário");
+                    cadastro.setSize(850, 500);
+                    cadastro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    cadastro.setLocationRelativeTo(null);
+                    cadastro.setLayout(null);
 
-            JTextField usuarioText = new JTextField();
-            usuarioText.setBounds(360, 120, 200, 40);
+                    JLabel nexusCadastro = new JLabel("NEXUS");
+                    nexusCadastro.setFont(new Font("Arial", Font.BOLD, 30));
+                    nexusCadastro.setBounds(400, 30, 200, 50);
 
-            JLabel senhaCadastro = new JLabel("Senha:");
-            senhaCadastro.setFont(new Font("Arial", Font.BOLD, 15));
-            senhaCadastro.setBounds(300, 180, 200, 40);
+                    JLabel usuarioCadastro = new JLabel("Nome Usuario:");
+                    usuarioCadastro.setFont(new Font("Arial", Font.BOLD, 15));
+                    usuarioCadastro.setBounds(250, 120, 200, 40);
 
-            JTextField textSenha = new JTextField();
-            textSenha.setBounds(360, 180, 200, 40);
+                    JTextField usuarioText = new JTextField();
+                    usuarioText.setBounds(360, 120, 200, 40);
 
-            JLabel confirmSenha = new JLabel("Confirmar Senha:");
-            confirmSenha.setFont(new Font("Arial", Font.BOLD, 15));
-            confirmSenha.setBounds(230, 230, 200, 40);
+                    JLabel senhaCadastro = new JLabel("Senha:");
+                    senhaCadastro.setFont(new Font("Arial", Font.BOLD, 15));
+                    senhaCadastro.setBounds(300, 180, 200, 40);
 
-            JTextField textConfirm = new JTextField();
-            textConfirm.setBounds(360, 230, 200,40);
+                    JTextField textSenha = new JTextField();
+                    textSenha.setBounds(360, 180, 200, 40);
 
-            JLabel email = new JLabel("E-mail:");
-            email.setFont(new Font("Arial", Font.BOLD, 15));
-            email.setBounds(300, 280, 200, 40);
+                    JLabel confirmSenha = new JLabel("Confirmar Senha:");
+                    confirmSenha.setFont(new Font("Arial", Font.BOLD, 15));
+                    confirmSenha.setBounds(230, 230, 200, 40);
 
-            JTextField textEmail = new JTextField();
-            textEmail.setBounds(360, 280, 200, 40);
+                    JTextField textConfirm = new JTextField();
+                    textConfirm.setBounds(360, 230, 200,40);
 
-            JButton salvarCadastro = new JButton("Cadastrar Conta");
-            salvarCadastro.setFont(new Font("Arial", Font.BOLD, 15));
-            salvarCadastro.setBounds(370, 330, 180, 30);
+                    JLabel email = new JLabel("E-mail:");
+                    email.setFont(new Font("Arial", Font.BOLD, 15));
+                    email.setBounds(300, 280, 200, 40);
 
-            cadastro.add(salvarCadastro);
-            cadastro.add(textEmail);
-            cadastro.add(email);
-            cadastro.add(textConfirm);
-            cadastro.add(confirmSenha);
-            cadastro.add(textSenha);
-            cadastro.add(senhaCadastro);
-            cadastro.add(usuarioText);
-            cadastro.add(usuarioCadastro);
-            cadastro.add(nexusCadastro);
-            cadastro.setVisible(true);
+                    JTextField textEmail = new JTextField();
+                    textEmail.setBounds(360, 280, 200, 40);
 
-            salvarCadastro.addActionListener(e1 -> {
-                JFrame cadastroListener = new JFrame();
-                JOptionPane.showMessageDialog(cadastroListener, "Cadastrado com sucesso!");
-            });
-        });
+                    JButton salvarCadastro = new JButton("Cadastrar Conta");
+                    salvarCadastro.setFont(new Font("Arial", Font.BOLD, 15));
+                    salvarCadastro.setBounds(370, 330, 180, 30);
+
+                    cadastro.add(salvarCadastro);
+                    cadastro.add(textEmail);
+                    cadastro.add(email);
+                    cadastro.add(textConfirm);
+                    cadastro.add(confirmSenha);
+                    cadastro.add(textSenha);
+                    cadastro.add(senhaCadastro);
+                    cadastro.add(usuarioText);
+                    cadastro.add(usuarioCadastro);
+                    cadastro.add(nexusCadastro);
+                    cadastro.setVisible(true);
+
+                    salvarCadastro.addActionListener(e1 -> {
+                        JFrame cadastroListener = new JFrame();
+                        JOptionPane.showMessageDialog(cadastroListener, "Cadastrado com sucesso!");
+                    });
+                });
     }
 }
