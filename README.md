@@ -84,4 +84,8 @@ Em sua tela integrada o usuário poderá observar os componentes do NEXUS como a
 
 •	O usuário poderá excluir seu login e será direcionado para a tela de cadastro onde fara um novo cadastro para obter um novo login. 
  
+ **DIAGRAMA**
+ 
+![diagrama de classe](https://github.com/user-attachments/assets/40f6ccab-3fd1-4620-8e4f-65d61dd6e795)
+
  
