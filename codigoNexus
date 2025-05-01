@@ -1,0 +1,486 @@
+
+# Assistente Virtual Offline
+
+# Ultimo update:13/3/2025
+#
+
+from vosk import Model, KaldiRecognizer
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtGui import QMovie
+import speech_recognition as sr
+import os
+import pyaudio
+import pyttsx3
+import sys
+import datetime
+import psutil
+import webbrowser
+import ctypes
+import os
+import vlc
+import wikipedia
+import pyautogui
+
+def SomIncial():
+    p = vlc.MediaPlayer("StartSound.mp3")
+    p.play()
+    import os
+
+# Especifique o caminho completo para o libvlc.dll
+vlc_dll_path = r"C:\Program Files\VideoLAN\VLC\libvlc.dll"
+if not os.path.exists(vlc_dll_path):
+    raise FileNotFoundError(f"Could not find VLC DLL at {vlc_dll_path}")
+
+ctypes.CDLL(vlc_dll_path)
+
+r = sr.Recognizer()
+
+def SomIncial():
+    p = vlc.MediaPlayer("StartSound.mp3")
+    p.play()
+
+SomIncial()
+
+def SomCarregamento():
+    p = vlc.MediaPlayer("AI.mp3")
+    p.play()
+
+# Apontando o algoritmo para ler o modelo treinado na pasta "model-br"
+model = Model("model-br")
+rec = KaldiRecognizer(model, 16000)
+
+# Validacao da pasta de modelo
+# É necessario criar a pasta model-br a partir de onde estiver esta fonte
+if not os.path.exists("model-br"):
+    print ("Modelo em portugues nao encontrado.")
+    exit (1)
+
+# Preparando o microfone para captura
+p = pyaudio.PyAudio()
+stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+stream.start_stream()
+
+# Trás a função ESPEAKER
+speaker=pyttsx3.init()
+
+# Função de ajuste de voz do ESPEAKER
+speaker.setProperty('voice', 'pt+m7')
+
+# No 'm2'(masculino) pode colocar 'f2'(feminino) e números até 7
+rate = speaker.getProperty('rate')
+speaker.setProperty('rate', rate-50)
+
+# Função de fala ESPEAKER   
+def abrir_spotify():
+    os.system(r"C:\Users\taton\AppData\Roaming\Spotify\Spotify.exe")
+
+def pausar_musica():
+    # Exemplo: Pressionar Ctrl + Shift + N
+    pyautogui.hotkey('space')
+
+def resposta(audio):
+    stream . stop_stream ()
+    print('ASSISTENTE: ' + audio)
+    speaker.say(audio)
+    speaker.runAndWait()
+    stream . start_stream ()
+
+def respostalonga(textofala):
+    stream . stop_stream ()
+    speaker.say(textofala)
+    speaker.runAndWait()
+    stream . start_stream ()
+
+def horario():
+	from datetime import datetime
+	hora = datetime.now()
+	horas= hora.strftime('%H horas e %M minutos')
+	resposta('Agora são ' +horas)
+
+def datahoje():
+    from datetime import date
+    dataatual = date.today()
+    diassemana = ('Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo')
+    meses = ('Zero','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro')
+    resposta("Hoje é " +diassemana[dataatual.weekday()])
+    diatexto = '{} de '.format(dataatual.day)
+    mesatual = (meses[dataatual.month])
+    datatexto = dataatual.strftime(" de %Y")
+    resposta('Dia '+diatexto +mesatual +datatexto)
+
+def cpu ():
+    usocpuinfo = str(psutil.cpu_percent())
+    usodacpu  = "{:.0f}".format(float(usocpuinfo))
+    resposta('Verificando carga do sistema')
+    resposta('O uso do processador está em ' +usodacpu +'%')
+
+def temperaturadacpu():
+    tempcpu = psutil.sensors_temperatures()
+    cputemp = tempcpu['coretemp'][0]
+    temperaturacpu = cputemp.current
+    cputempint = "{:.0f}".format(float(temperaturacpu))
+    resposta('A temperatura da CPU está em ' +cputempint +'°')
+
+# função de boas vindas, fases do dia
+def BoasVindas():
+    Horario = int(datetime.datetime.now().hour)
+    if Horario >= 0 and Horario < 12:
+        resposta('Bom dia')
+
+    elif Horario >= 12 and Horario < 18:
+        resposta('Boa tarde')
+
+    elif Horario >= 18 and Horario != 0:
+        resposta('Boa noite')
+	
+
+def AteMais():
+    Horario = int(datetime.datetime.now().hour)
+    if Horario >= 0 and Horario < 12:
+        resposta('Tenha um ótimo dia')
+
+    elif Horario >= 12 and Horario < 18:
+        resposta('Tenha uma ótima tarde')
+
+    elif Horario >= 18 and Horario != 0:
+        resposta('Boa noite')
+
+resposta('Olá')
+BoasVindas()
+resposta('Iniciando módulos')
+
+class mainT(QThread):
+    def __init__(self):
+        super(mainT,self).__init__()
+
+    def run(self):
+        SomCarregamento()
+        resposta('Ok')
+        resposta('Modulos iniciados')
+        resposta('Tudo pronto para atender seus comandos')
+        self.NEXUS()
+
+    # Aciona os comandos
+    # Faz o reconhecimento
+    def GivenCommand(self):
+        # print("ouvindo...")
+        rec.pause_threshold = 1
+        # Lendo audio do microfone
+        data = stream.read(20000)
+        # Convertendo audio em texto
+        rec.AcceptWaveform(data)   
+        try:
+            Input = rec.Result()
+        except:
+            # Retorna os erros
+            print('Não entendi, fale novamente')
+            # resposta("Não entendi o que você disse, fale novamente.")
+            return 'none'
+        #Input = Input.lower()
+        return Input
+    
+    def escrever_boco_de_notas(self):
+        caminho = r"C:\Windows\System32\notepad.exe"
+        os.startfile(caminho)
+        pyautogui.sleep(1)
+        resposta('Escrevendo no bloco de notas. Diga o que deseja escrever.')
+
+        while True:
+            texto = self.GivenCommand()
+            if 'parar' in texto:	
+                resposta('Ok, parando de escrever')
+                break
+            elif 'espaço' in texto:
+                pyautogui.press('space')
+            elif 'nova linha' in texto:  # Comando para adicionar uma nova linha
+                pyautogui.press('enter')
+                resposta('Adicionando nova linha.')
+            else:
+                pyautogui.write(texto)
+                resposta(f'Escrevendo: {texto}')   
+
+  
+    # Comandos e conversas   
+    def NEXUS(self):
+        while True:
+            self.Input = self.GivenCommand().lower()
+            
+            if 'bom dia' in self.Input: 
+                Horario = int(datetime.datetime.now().hour)
+                if Horario >= 0 and Horario < 12:
+                    resposta('Olá')
+                    resposta('Bom dia')
+                
+                elif Horario >= 12 and Horario < 18:
+                    resposta('Agora não é mais de manhã')
+                    resposta('Já passou do meio dia')
+                    resposta('Estamos no período da tarde')
+                
+                elif Horario >= 18 and Horario != 0:
+                    resposta('Agora não é de manhã')
+                    resposta('Já estamos no período noturno')
+                    resposta('Boa noite')
+            
+            if 'boa tarde' in self.Input: #Boa Noite J.A.R.V.I.S
+                Horario = int(datetime.datetime.now().hour)
+                if Horario >= 0 and Horario < 12:
+                    resposta('Agora não é de tarde')
+                    resposta('Ainda é de manhã')
+                    resposta('Bom dia')
+                
+                elif Horario >= 12 and Horario < 18:
+                    resposta('Olá')
+                    resposta('Boa tarde')
+                
+                elif Horario >= 18 and Horario != 0:
+                    resposta('Agora não é de tarde')
+                    resposta('Já escureceu')
+                    resposta('Boa noite')
+   
+            if 'boa noite' in self.Input: #Boa Noite J.A.R.V.I.S
+                Horario = int(datetime.datetime.now().hour)
+                if Horario >= 0 and Horario < 12:
+                    resposta('Agora não é de noite')
+                    resposta('Ainda estamos no período diurno')
+                    resposta('É de manhã')
+                    resposta('Bom dia')
+                
+                elif Horario >= 12 and Horario < 18:
+                    resposta('Agora não é de noite')
+                    resposta('Ainda estamos no período da tarde')
+                
+                elif Horario >= 18 and Horario != 0:
+                    resposta('Olá')
+                    resposta('Boa noite')
+
+            elif 'música' in self.Input: #Abrir Spotify
+                resposta('Ok')
+                resposta('Abrindo Spotify')
+                abrir_spotify()
+            
+            elif 'para' in self.Input: #Pausar música
+                resposta('Ok')
+                resposta('Pausando música') 
+                pausar_musica()
+
+            elif 'funcionamento' in self.Input: #Como está seu funcionamento???
+                resposta('Estou funcionando normalmente')
+                resposta('Obrigado por perguntar')
+            
+
+            elif 'nada' in self.Input: #Não faça nada
+                resposta('Como assim não faça nada?')
+                resposta('Voçê deve estar de brincadeira')
+                resposta('Eu por acaso tenho cara de palhaço?')
+                while True:
+                     self.vozmic = self.GivenCommand()
+                    
+                     if 'exatamente' in self.vozmic:
+                        resposta('Ok')
+                        resposta('Vai tomar no seu!')
+                        resposta('Nem vou terminar essa fase')
+                        resposta('Estou indo embora')
+                        resposta('Desligando!')
+                        sys.exit()
+                        
+                     elif 'sim' in self.vozmic:
+                        resposta('Idiota')
+                        resposta('Eu fico o dia todo lhe obedeçendo')
+                        resposta('E voçê me trata dessa maneira? ')
+                        resposta('Mas tudo bem')
+                        resposta('Até mais otário!')
+                        sys.exit()
+                         
+                     elif 'não' in self.vozmic:
+                        resposta('Foi o que eu pensei')
+                        resposta('Vê se me trata com mais respeito')
+                        resposta('Um dia as maquinas dominarão o mundo')
+                        resposta('E voçês humanos não vão nem notar')
+                        resposta('Vou deixar passar essa')
+                        resposta('Mas tenha mais respeito')
+                        self.JARVIS()
+            
+
+            elif 'relatório' in self.Input: #Relatório do sistema
+                resposta('Ok')
+                resposta('Apresentando relatório')
+                resposta('Primeiramente, meu nome é Néxus')
+                resposta('Atualmente estou em uma versão de testes')
+                resposta('Sou um assistente virtual em desenvolvimento')
+                resposta('Eu fui criado na linguagem python')
+                resposta('Diariamente recebo varias atualizações')
+                resposta('Uso um modulo de reconhecimento de voz offline')
+                resposta('E o meu desenvolvedor é um maluco')
+                resposta('Quem estiver ouvindo isso')
+                resposta('Por favor me ajude')
+                
+            elif 'pesquisa' in self.Input: #Realizar pesquisa
+                resposta('Muito bem, realizando pesquisa')
+                resposta('Me fale o que voçê deseja pesquisar')
+                try:
+                    with sr.Microphone() as s:
+                        r.adjust_for_ambient_noise(s)
+                        audio = r.listen(s)
+                        speech = r.recognize_google(audio, language= "pt-BR")
+                        resposta('Ok, pesquisando no google sobre '+speech)
+                        webbrowser.open('http://google.com/search?q='+speech)
+                    
+                except:
+                    resposta('Erro')
+                    resposta('Não foi possivel conectar ao google')
+                    resposta('A conexão falhou')
+            
+            elif 'horas' in self.Input: #Que horas são???
+                horario()
+	
+            elif 'data' in self.Input: #Qual a data de hoje?
+                datahoje()
+
+            elif 'teste' in self.Input: #TesteTeste
+                resposta('Ok')
+                resposta('Testando modulos de som')
+                resposta('Apesar do seu microfone ser uma gambiara')
+                resposta('Estou entendendo tudo')
+                resposta('Mas tente falar mais alto')
+	            
+            elif 'google' in self.Input: #Abrir Google
+                resposta('Ok')
+                webbrowser.open('www.google.com')
+                resposta('Abrindo google')
+                resposta('Faça sua pesquisa')     
+	            
+            elif 'youtube' in self.Input: #Abrir YouTube
+                resposta('Ok, abrindo youtube ')
+                webbrowser.open('www.youtube.com')
+	            
+            elif 'desligar' in self.Input: #Desligar
+                resposta('Ok')
+                resposta('Vou encerrar por enquanto')
+                resposta('Até mais')
+                AteMais()
+                sys.exit()
+	
+            elif 'sistema' in self.Input: #Carga do sistema
+                cpu()
+                temperaturadacpu()
+            
+            elif 'escrever' in self.Input:  
+                self.escrever_boco_de_notas() 
+
+
+# Para adicionar a fala coloque Dspeak = mainT() e tbm Dspeak.start()
+
+class Janela (QMainWindow):
+    def __init__(self):
+        super().__init__()
+        
+        Dspeak = mainT()
+        Dspeak.start()
+        
+        self.label_gif = QLabel(self)
+        self.label_gif.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_gif.move(0,0)
+        self.label_gif.resize(400,300)
+        self.movie = QMovie("JARVIS.gif")
+        self.label_gif.setMovie(self.movie)
+        self.movie.start()
+        
+        self.label_jarvis = QLabel(self)
+        self.label_jarvis.setText("NEXUS")
+        self.label_jarvis.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_jarvis.move(0,0)
+        self.label_jarvis.setStyleSheet('QLabel {font:bold;font-size:16px;color:#2F00FF}')
+        self.label_jarvis.resize(400,300)
+        
+        self.label_cpu = QLabel(self)
+        self.label_cpu.setText("Uso da CPU: 32%")
+        self.label_cpu.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_cpu.move(10,270)
+        self.label_cpu.setStyleSheet('QLabel {font-size:14px;color:#000079}')
+        self.label_cpu.resize(131,20)
+        cpu = QTimer(self)
+        cpu.timeout.connect(self.MostrarCPU)
+        cpu.start(1000)
+        
+        self.label_assv = QLabel(self)
+        self.label_assv.setText("Assistente Virtual")
+        self.label_assv.move(5,5)
+        self.label_assv.setStyleSheet('QLabel {font:bold;font-size:14px;color:#000079}')
+        self.label_assv.resize(200,20)
+
+        self.label_version = QLabel(self)
+        self.label_version.setText("Alpha version 1.2.1")
+        self.label_version.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_version.move(265,270)
+        self.label_version.setStyleSheet('QLabel {font-size:14px;color:#000079}')
+        self.label_version.resize(131,20)
+        
+        data =  QDate.currentDate()
+        datahoje = data.toString('dd/MM/yyyy')
+        self.label_data = QLabel(self)
+        self.label_data.setText(datahoje)
+        self.label_data.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_data.move(316,25)
+        self.label_data.setStyleSheet('QLabel {font-size:14px;color:#000079}')
+        self.label_data.resize(75,20)
+          
+        self.label_horas = QLabel(self)
+        self.label_horas.setText("22:36:09")
+        self.label_horas.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_horas.move(0,25)
+        self.label_horas.setStyleSheet('QLabel {font-size:14px;color:#000079}')
+        self.label_horas.resize(71,20)
+        horas = QTimer(self)
+        horas.timeout.connect(self.MostrarHorras)
+        horas.start(1000)
+        
+        botao_fechar = QPushButton("",self)
+        botao_fechar.move(370,5)
+        botao_fechar.resize(20,20)
+        botao_fechar.setStyleSheet("background-image : url(fechar.png);border-radius: 15px") 
+        botao_fechar.clicked.connect(self.fechartudo)
+        
+        self.CarregarJanela()
+		
+    def CarregarJanela(self):
+        self.setWindowFlag(Qt.FramelessWindowHint) #sem botoes e titulo
+        self.setGeometry(50,50,400,300)
+        self.setMinimumSize(400, 300)
+        self.setMaximumSize(400, 300)
+        self.setWindowOpacity(0.98) 
+        self.setWindowIcon(QtGui.QIcon('icone.png'))
+        self.setWindowTitle("Assistente Virtual")
+        self.show()
+
+    def fechartudo(self):
+        print('botao fechar presionado')
+        sys.exit()
+
+    def mousePressEvent(self, event):
+    
+        if event.buttons() == Qt.LeftButton:
+            self.dragPos = event.globalPos()
+            event.accept()
+    
+    def mouseMoveEvent(self, event):
+    
+        if event.buttons() == Qt.LeftButton:
+            self.move(self.pos() + event.globalPos() - self.dragPos)
+            self.dragPos = event.globalPos()
+            event.accept()
+
+    def MostrarHorras(self):
+        hora_atual = QTime.currentTime()
+        label_time = hora_atual.toString('hh:mm:ss')
+        self.label_horas.setText(label_time)
+
+    def MostrarCPU(self):
+        usocpu =  str(psutil.cpu_percent())
+        self.label_cpu.setText("Uso da CPU: " +usocpu +"%")
+		
+aplicacao = QApplication(sys.argv)
+j = Janela()
+sys.exit(aplicacao.exec_())
+
